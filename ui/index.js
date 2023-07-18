@@ -17,4 +17,5 @@ const wasmWorker = wrap(workerPoint);
 
 (async function() {
   const result = await wasmWorker(1, 4);
+  console.log(result, "0000000000000000000000000");
 })();
