@@ -9,9 +9,11 @@
   "author": "vitaminaq",
   "license": "ISC",
   "dependencies": {
-    "comlink": "^4.4.1"
+    "comlink": "^4.4.1",
+    "events": "^3.3.0"
   },
   "devDependencies": {
+    "@types/events": "^3.0.0",
     "file-loader": "^6.2.0",
     "webpack": "^5.88.1",
     "webpack-cli": "^5.1.4",

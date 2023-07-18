@@ -1,6 +1,10 @@
 import { expose } from "comlink";
-import addWasm from "./wasm/add.wasm";
-import addJS from "./wasm/add.js";
+import addWasm from "../../../wasm/add.wasm";
+import addJS from "../../../wasm/add.js";
+import { localEndpoint } from "../rpc/adapter";
+
+// 是否开启多线程开关
+export const thread = false;
 
 // const loadWasm = async () => {
 //     return new Promise(async resolve => {
@@ -20,14 +24,19 @@ const sum = async (a, b) =>
     const buffer = await wasm.arrayBuffer();
     const _instance = await addJS({
       wasmBinary: buffer,
-      test: () => {
-        console.log("vvvvvv");
-      }
     });
 
-    console.log("获取到的Module", _instance);
+    const res = _instance._add(a, b);
 
-    resolve(_instance._add(a, b))
+    resolve(res)
   });
 
-expose(sum);
+
+export const workerPointName = "worker";
+export const mianPointName = "mian";
+
+export const workerPoint = thread
+	? self
+	: localEndpoint(workerPointName, mianPointName);
+
+expose(sum, workerPoint);
