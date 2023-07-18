@@ -1,4 +1,4 @@
-import { expose } from "comlink";
+import { expose, wrap } from "comlink";
 import addWasm from "../../../wasm/add.wasm";
 import addJS from "../../../wasm/add.js";
 import { localEndpoint } from "../rpc/adapter";
@@ -33,10 +33,18 @@ const sum = async (a, b) =>
 
 
 export const workerPointName = "worker";
-export const mianPointName = "mian";
+export const mainPointName = "mian";
 
 export const workerPoint = thread
 	? self
-	: localEndpoint(workerPointName, mianPointName);
+	: localEndpoint(workerPointName, mainPointName);
+
+const main = wrap(workerPoint)
 
 expose(sum, workerPoint);
+
+setTimeout(async () => {
+  const res = await main.add();
+
+  console.log("主线程计算结果", res);
+}, 2000);
