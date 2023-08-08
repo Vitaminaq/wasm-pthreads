@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+    <script src="bind.js"></script>
+    <script>
+    console.log('result', Module);
+
+    Module.onRuntimeInitialized = _ => {
+        console.log('lerp result: ' + Module.lerp(1, 2, 0.5));
+
+        console.log('findPersonAtLocation result: ', Module.findPersonAtLocation([10.2, '大飞哥']));
+
+        var instance = new Module.MyClass(10, "hello");
+        instance.incrementX();
+        instance.x; // 12
+        instance.x = 20; // 20
+        console.log("MyClass", instance.x);
+        Module.MyClass.getStringFromInstance(instance); // "hello"
+        instance.delete();
+    };
+    </script>
+</html>
